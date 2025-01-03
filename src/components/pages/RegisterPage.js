@@ -163,7 +163,7 @@ const RegisterPage = ({ onRegister, onNavigate }) => {
                             className="h-4 w-4"
                         />
                         <Label htmlFor="isAdmin">注册为管理员账号</Label>
-                    </div>*/}
+                    </div>*/}c
 
                     <div className="space-y-2">
                         <Label>安全问题（可选）</Label>
