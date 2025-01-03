@@ -83,6 +83,7 @@ const RegisterPage = ({ onRegister, onNavigate }) => {
                             value={form.username}
                             onChange={(e) => setForm({...form, username: e.target.value})}
                             className={errors.username ? 'border-red-500' : ''}
+                            autoComplete="off"
                         />
                         {errors.username && <p className="text-sm text-red-500">{errors.username}</p>}
                     </div>
@@ -95,6 +96,7 @@ const RegisterPage = ({ onRegister, onNavigate }) => {
                             value={form.email}
                             onChange={(e) => setForm({...form, email: e.target.value})}
                             className={errors.email ? 'border-red-500' : ''}
+                            autoComplete="off"
                         />
                         {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
                     </div>
@@ -107,6 +109,7 @@ const RegisterPage = ({ onRegister, onNavigate }) => {
                             value={form.birthday}
                             onChange={(e) => setForm({...form, birthday: e.target.value})}
                             className={errors.birthday ? 'border-red-500' : ''}
+                            autoComplete="off"
                         />
                         {errors.birthday && <p className="text-sm text-red-500">{errors.birthday}</p>}
                     </div>
@@ -119,6 +122,7 @@ const RegisterPage = ({ onRegister, onNavigate }) => {
                             value={form.password}
                             onChange={(e) => setForm({...form, password: e.target.value})}
                             className={errors.password ? 'border-red-500' : ''}
+                            autoComplete="off"
                         />
                         {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
                     </div>
@@ -131,6 +135,7 @@ const RegisterPage = ({ onRegister, onNavigate }) => {
                             value={form.confirmPassword}
                             onChange={(e) => setForm({...form, confirmPassword: e.target.value})}
                             className={errors.confirmPassword ? 'border-red-500' : ''}
+                            autoComplete="off"
                         />
                         {errors.confirmPassword && <p className="text-sm text-red-500">{errors.confirmPassword}</p>}
                     </div>
