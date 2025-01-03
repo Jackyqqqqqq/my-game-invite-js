@@ -33,6 +33,7 @@ const LoginPage = ({ onLogin, onNavigate }) => {
                             id="username"
                             value={form.username}
                             onChange={(e) => setForm({...form, username: e.target.value})}
+                            autoComplete="off"
                         />
                     </div>
                     <div className="space-y-2">
@@ -42,6 +43,7 @@ const LoginPage = ({ onLogin, onNavigate }) => {
                             type="password"
                             value={form.password}
                             onChange={(e) => setForm({...form, password: e.target.value})}
+                            autoComplete="new-password"
                         />
                     </div>
                     <div className="space-y-2">
