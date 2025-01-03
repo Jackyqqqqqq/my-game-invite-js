@@ -44,32 +44,50 @@ const GameInvitePage = ({ currentUser, users = [], games = [], onLogout, onGameI
                     // 如果选择发送邮件且接收者有邮箱
                     if (sendEmail && recipient.email) {
                         try {
-                            console.log('正在发送邮件到:', recipient.email);
+                            const emailData = {
+                                to_email: recipient.email,
+                                to_name: recipient.username,
+                                from_name: currentUser?.username,
+                                game_name: form.game,
+                                game_time: new Date(form.time).toLocaleString(),
+                                message: form.message
+                            };
+
+                            console.log('正在发送邮件:', emailData);
+
                             const response = await fetch('/api/send-email', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
                                 },
-                                body: JSON.stringify({
-                                    to_email: recipient.email,
-                                    to_name: recipient.username,
-                                    from_name: currentUser?.username,
-                                    game_name: form.game,
-                                    game_time: new Date(form.time).toLocaleString(),
-                                    message: form.message
-                                })
+                                body: JSON.stringify(emailData)
                             });
 
                             const data = await response.json();
 
                             if (!response.ok) {
-                                throw new Error(data.error || '邮件发送失败');
+                                let errorMessage = data.error || '邮件发送失败';
+                                if (response.status === 429) {
+                                    errorMessage = '发送频率过高，请稍后再试';
+                                }
+                                throw new Error(errorMessage);
                             }
 
-                            console.log('邮件发送成功');
+                            console.log('邮件发送成功:', data);
                         } catch (error) {
-                            console.error('邮件发送详细错误:', error);
-                            alert(`发送邮件给 ${recipient.username} 失败: ${error.message}`);
+                            console.error('邮件发送错误:', error);
+
+                            // 使用更友好的错误提示
+                            let errorMessage = '邮件发送失败';
+                            if (error.message.includes('频率过高')) {
+                                errorMessage = '发送频率过高，请稍后再试';
+                            } else if (error.message.includes('Invalid recipient')) {
+                                errorMessage = '收件人邮箱地址无效';
+                            } else if (error.message.includes('Authentication failed')) {
+                                errorMessage = '邮件服务器认证失败，请联系管理员';
+                            }
+
+                            alert(`发送邮件给 ${recipient.username} 失败: ${errorMessage}`);
                         }
                     }
                 }
