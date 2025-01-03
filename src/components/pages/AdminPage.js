@@ -2,10 +2,24 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import GameStatsCharts from "./GameStatsCharts";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+// AdminPage.js 顶部添加导入
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+
 import UserDetailsDialog from "./UserDetailsDialog";
+import GameStatsCharts from "./GameStatsCharts";
+
 
 const AdminPage = ({ users, games, gameStats, onDeleteUser, onNavigateBack, onUpdateGames }) => {
     const [showAddGame, setShowAddGame] = useState(false);
@@ -58,7 +72,16 @@ const AdminPage = ({ users, games, gameStats, onDeleteUser, onNavigateBack, onUp
         });
         alert('密码修改成功');
     };
+    const onUpdateGameStats = (updatedStats) => {
+        // 由于这个函数没有从 props 传入，我们暂时不做任何操作
+        console.log('Game stats update:', updatedStats);
+    };
 
+    const onUpdateUserGameRecords = (gameToDelete) => {
+        // 由于这个函数没有从 props 传入，我们暂时不做任何操作
+        console.log('Game records update:', gameToDelete);
+    };
+    
     const handleViewDetails = (user) => {
         setSelectedUser(user);
         setShowDetails(true);

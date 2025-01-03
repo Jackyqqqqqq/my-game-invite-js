@@ -226,12 +226,12 @@ const App = () => {
                 }
                 return <AdminPage
                     users={users}
-                    games={games}
-                    gameStats={gameStats}
+                    games={games || []}
+                    gameStats={gameStats || {}}
                     onDeleteUser={handleDeleteUser}
                     onNavigateBack={() => setPage('game')}
                     onUpdateGames={handleUpdateGames}
-                    onUpdateUser={handleUpdateUser}  // 添加这行
+                    onUpdateUser={handleUpdateUser}
                 />;
 
             case 'game':

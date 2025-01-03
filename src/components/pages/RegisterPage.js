@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const RegisterPage = ({ onRegister, onNavigate }) => {
     // 安全问题列表
@@ -154,10 +155,12 @@ const RegisterPage = ({ onRegister, onNavigate }) => {
                     </div>
 
                     <div className="flex items-center space-x-2">
-                        <Checkbox
+                        <input
+                            type="checkbox"
                             id="isAdmin"
                             checked={form.isAdmin}
-                            onCheckedChange={(checked) => setForm({...form, isAdmin: checked})}
+                            onChange={(e) => setForm({...form, isAdmin: e.target.checked})}
+                            className="h-4 w-4"
                         />
                         <Label htmlFor="isAdmin">注册为管理员账号</Label>
                     </div>
