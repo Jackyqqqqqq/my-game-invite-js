@@ -16,6 +16,49 @@ const AdminPage = ({ users, games, gameStats, onDeleteUser, onNavigateBack, onUp
     const [selectedUser, setSelectedUser] = useState(null);
     const [showDetails, setShowDetails] = useState(false);
 
+    const [showPasswordDialog, setShowPasswordDialog] = useState(false);
+    const [passwordForm, setPasswordForm] = useState({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+    });
+    const [passwordError, setPasswordError] = useState('');
+    const handleChangePassword = () => {
+        setPasswordError('');
+
+        // 验证当前密码
+        const currentUser = users.find(u => u.isAdmin);
+        if (btoa(passwordForm.currentPassword) !== currentUser.password) {
+            setPasswordError('当前密码不正确');
+            return;
+        }
+
+        // 验证新密码
+        if (passwordForm.newPassword.length < 6) {
+            setPasswordError('新密码至少需要6个字符');
+            return;
+        }
+
+        if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+            setPasswordError('两次输入的新密码不一致');
+            return;
+        }
+
+        // 更新密码
+        onUpdateUser({
+            ...currentUser,
+            password: btoa(passwordForm.newPassword)
+        });
+
+        setShowPasswordDialog(false);
+        setPasswordForm({
+            currentPassword: '',
+            newPassword: '',
+            confirmPassword: ''
+        });
+        alert('密码修改成功');
+    };
+
     const handleViewDetails = (user) => {
         setSelectedUser(user);
         setShowDetails(true);
@@ -66,6 +109,76 @@ const AdminPage = ({ users, games, gameStats, onDeleteUser, onNavigateBack, onUp
 
     return (
         <div className="space-y-4">
+            <TabsContent value="users">
+                {/* 添加修改密码按钮 */}
+                <div className="mb-4">
+                    <Button onClick={() => setShowPasswordDialog(true)}>
+                        修改管理员密码
+                    </Button>
+                </div>
+                {/* 现有的用户表格 */}
+            </TabsContent>
+            {/* 添加密码修改对话框 */}
+            <Dialog open={showPasswordDialog} onOpenChange={setShowPasswordDialog}>
+                <DialogContent>
+                    <DialogTitle>修改管理员密码</DialogTitle>
+                    <div className="space-y-4 p-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="currentPassword">当前密码</Label>
+                            <Input
+                                id="currentPassword"
+                                type="password"
+                                value={passwordForm.currentPassword}
+                                onChange={(e) => setPasswordForm({
+                                    ...passwordForm,
+                                    currentPassword: e.target.value
+                                })}
+                                autoComplete="off"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="newPassword">新密码</Label>
+                            <Input
+                                id="newPassword"
+                                type="password"
+                                value={passwordForm.newPassword}
+                                onChange={(e) => setPasswordForm({
+                                    ...passwordForm,
+                                    newPassword: e.target.value
+                                })}
+                                autoComplete="new-password"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="confirmPassword">确认新密码</Label>
+                            <Input
+                                id="confirmPassword"
+                                type="password"
+                                value={passwordForm.confirmPassword}
+                                onChange={(e) => setPasswordForm({
+                                    ...passwordForm,
+                                    confirmPassword: e.target.value
+                                })}
+                                autoComplete="new-password"
+                            />
+                        </div>
+                        {passwordError && (
+                            <p className="text-sm text-red-500">{passwordError}</p>
+                        )}
+                        <div className="flex justify-end space-x-2">
+                            <Button
+                                variant="outline"
+                                onClick={() => setShowPasswordDialog(false)}
+                            >
+                                取消
+                            </Button>
+                            <Button onClick={handleChangePassword}>
+                                确认修改
+                            </Button>
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold">管理员控制面板</h2>
                 <Button variant="outline" onClick={onNavigateBack}>

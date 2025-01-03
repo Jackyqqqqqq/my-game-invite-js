@@ -17,7 +17,18 @@ const App = () => {
         "PUBG", "王者荣耀","永劫无间", "CSGO",
     ]);
     const [page, setPage] = useState('login');
-    const [users, setUsers] = useState([]);
+    // 在 App.js 中的组件初始化部分
+    const [users, setUsers] = useState([{
+        id: 1,
+        username: 'qyz-admin',
+        password: btoa('qyzzyh264263480'), // Base64 加密的默认密码
+        email: '2391534566@qq.com',
+        isAdmin: true,
+        registerTime: new Date().toISOString(),
+        gameRecords: {},
+        birthday: '2004-08-21'
+    }]);
+
     const [currentUser, setCurrentUser] = useState(null);
     const [gameStats, setGameStats] = useState({});
     const [notifications, setNotifications] = useState([]);
@@ -207,6 +218,7 @@ const App = () => {
                     onLogout={handleLogout}
                     onGameInvite={handleGameInvite}
                 />;
+            // 在 App.js 的 renderPage 函数中
             case 'admin':
                 if (!currentUser?.isAdmin) {
                     setPage('game');
@@ -219,6 +231,7 @@ const App = () => {
                     onDeleteUser={handleDeleteUser}
                     onNavigateBack={() => setPage('game')}
                     onUpdateGames={handleUpdateGames}
+                    onUpdateUser={handleUpdateUser}  // 添加这行
                 />;
 
             case 'game':
