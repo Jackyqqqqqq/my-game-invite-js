@@ -1,7 +1,4 @@
 {
-  "engines": {
-    "node": ">=20.0.0"
-  },
   "name": "my-game-invite-js",
   "version": "0.1.0",
   "private": true,
