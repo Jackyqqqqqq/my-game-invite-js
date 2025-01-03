@@ -153,6 +153,15 @@ const RegisterPage = ({ onRegister, onNavigate }) => {
                         {errors.confirmPassword && <p className="text-sm text-red-500">{errors.confirmPassword}</p>}
                     </div>
 
+                    <div className="flex items-center space-x-2">
+                        <Checkbox
+                            id="isAdmin"
+                            checked={form.isAdmin}
+                            onCheckedChange={(checked) => setForm({...form, isAdmin: checked})}
+                        />
+                        <Label htmlFor="isAdmin">注册为管理员账号</Label>
+                    </div>
+
                     <div className="space-y-2">
                         <Label>安全问题（可选）</Label>
                         <Select
@@ -160,7 +169,7 @@ const RegisterPage = ({ onRegister, onNavigate }) => {
                             onValueChange={(value) => setForm({...form, securityQuestion: value})}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="选择安全问题" />
+                                <SelectValue placeholder="选择安全问题"/>
                             </SelectTrigger>
                             <SelectContent>
                                 {securityQuestions.map((question, index) => (
