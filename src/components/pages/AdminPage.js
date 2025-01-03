@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 // AdminPage.js 顶部添加导入
 import {
@@ -21,7 +21,7 @@ import UserDetailsDialog from "./UserDetailsDialog";
 import GameStatsCharts from "./GameStatsCharts";
 
 
-const AdminPage = ({ users, games, gameStats, onDeleteUser, onNavigateBack, onUpdateGames }) => {
+const AdminPage = ({ users, games, gameStats, onDeleteUser, onNavigateBack, onUpdateGames, onUpdateUser}) => {
     const [showAddGame, setShowAddGame] = useState(false);
     const [newGame, setNewGame] = useState('');
     const [editingGame, setEditingGame] = useState(null);
@@ -81,7 +81,7 @@ const AdminPage = ({ users, games, gameStats, onDeleteUser, onNavigateBack, onUp
         // 由于这个函数没有从 props 传入，我们暂时不做任何操作
         console.log('Game records update:', gameToDelete);
     };
-    
+
     const handleViewDetails = (user) => {
         setSelectedUser(user);
         setShowDetails(true);
@@ -132,76 +132,6 @@ const AdminPage = ({ users, games, gameStats, onDeleteUser, onNavigateBack, onUp
 
     return (
         <div className="space-y-4">
-            <TabsContent value="users">
-                {/* 添加修改密码按钮 */}
-                <div className="mb-4">
-                    <Button onClick={() => setShowPasswordDialog(true)}>
-                        修改管理员密码
-                    </Button>
-                </div>
-                {/* 现有的用户表格 */}
-            </TabsContent>
-            {/* 添加密码修改对话框 */}
-            <Dialog open={showPasswordDialog} onOpenChange={setShowPasswordDialog}>
-                <DialogContent>
-                    <DialogTitle>修改管理员密码</DialogTitle>
-                    <div className="space-y-4 p-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="currentPassword">当前密码</Label>
-                            <Input
-                                id="currentPassword"
-                                type="password"
-                                value={passwordForm.currentPassword}
-                                onChange={(e) => setPasswordForm({
-                                    ...passwordForm,
-                                    currentPassword: e.target.value
-                                })}
-                                autoComplete="off"
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="newPassword">新密码</Label>
-                            <Input
-                                id="newPassword"
-                                type="password"
-                                value={passwordForm.newPassword}
-                                onChange={(e) => setPasswordForm({
-                                    ...passwordForm,
-                                    newPassword: e.target.value
-                                })}
-                                autoComplete="new-password"
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="confirmPassword">确认新密码</Label>
-                            <Input
-                                id="confirmPassword"
-                                type="password"
-                                value={passwordForm.confirmPassword}
-                                onChange={(e) => setPasswordForm({
-                                    ...passwordForm,
-                                    confirmPassword: e.target.value
-                                })}
-                                autoComplete="new-password"
-                            />
-                        </div>
-                        {passwordError && (
-                            <p className="text-sm text-red-500">{passwordError}</p>
-                        )}
-                        <div className="flex justify-end space-x-2">
-                            <Button
-                                variant="outline"
-                                onClick={() => setShowPasswordDialog(false)}
-                            >
-                                取消
-                            </Button>
-                            <Button onClick={handleChangePassword}>
-                                确认修改
-                            </Button>
-                        </div>
-                    </div>
-                </DialogContent>
-            </Dialog>
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold">管理员控制面板</h2>
                 <Button variant="outline" onClick={onNavigateBack}>
@@ -220,6 +150,12 @@ const AdminPage = ({ users, games, gameStats, onDeleteUser, onNavigateBack, onUp
 
                         {/* 用户管理标签页 */}
                         <TabsContent value="users">
+                            {/* 添加修改密码按钮 */}
+                            <div className="mb-4">
+                                <Button onClick={() => setShowPasswordDialog(true)}>
+                                    修改管理员密码
+                                </Button>
+                            </div>
                             <div className="relative overflow-x-auto rounded-lg border mt-4">
                                 <table className="w-full text-sm text-left">
                                     <thead className="text-xs uppercase bg-gray-50">
