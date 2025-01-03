@@ -3,16 +3,25 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const RegisterPage = ({ onRegister, onNavigate }) => {
+    // 安全问题列表
+    const securityQuestions = [
+        "您的第一个宠物叫什么名字？",
+        "您最喜欢的小学老师姓名是？",
+        "您最喜欢的电影是？",
+        "您的出生地是？",
+        "您母亲的姓名是？"
+    ];
+
     const [form, setForm] = useState({
         username: '',
         password: '',
         confirmPassword: '',
         email: '',
         birthday: '',
-        selectedQuestion: '',
+        securityQuestion: '',
         securityAnswer: '',
         isAdmin: false
     });
@@ -48,6 +57,11 @@ const RegisterPage = ({ onRegister, onNavigate }) => {
             newErrors.birthday = '请选择生日';
         }
 
+        // 如果选择了安全问题但没有填写答案
+        if (form.securityQuestion && !form.securityAnswer) {
+            newErrors.securityAnswer = '请输入安全问题答案';
+        }
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -56,7 +70,6 @@ const RegisterPage = ({ onRegister, onNavigate }) => {
         e.preventDefault();
 
         if (validateForm()) {
-            // Base64 加密密码
             const encodedPassword = btoa(form.password);
             const { confirmPassword, ...registerData } = form;
 
@@ -75,7 +88,7 @@ const RegisterPage = ({ onRegister, onNavigate }) => {
                 <CardDescription>创建您的新账号</CardDescription>
             </CardHeader>
             <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
                     <div className="space-y-2">
                         <Label htmlFor="username">用户名</Label>
                         <Input
@@ -122,7 +135,7 @@ const RegisterPage = ({ onRegister, onNavigate }) => {
                             value={form.password}
                             onChange={(e) => setForm({...form, password: e.target.value})}
                             className={errors.password ? 'border-red-500' : ''}
-                            autoComplete="off"
+                            autoComplete="new-password"
                         />
                         {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
                     </div>
@@ -135,10 +148,43 @@ const RegisterPage = ({ onRegister, onNavigate }) => {
                             value={form.confirmPassword}
                             onChange={(e) => setForm({...form, confirmPassword: e.target.value})}
                             className={errors.confirmPassword ? 'border-red-500' : ''}
-                            autoComplete="off"
+                            autoComplete="new-password"
                         />
                         {errors.confirmPassword && <p className="text-sm text-red-500">{errors.confirmPassword}</p>}
                     </div>
+
+                    <div className="space-y-2">
+                        <Label>安全问题（可选）</Label>
+                        <Select
+                            value={form.securityQuestion}
+                            onValueChange={(value) => setForm({...form, securityQuestion: value})}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="选择安全问题" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {securityQuestions.map((question, index) => (
+                                    <SelectItem key={index} value={question}>
+                                        {question}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    {form.securityQuestion && (
+                        <div className="space-y-2">
+                            <Label htmlFor="securityAnswer">安全问题答案</Label>
+                            <Input
+                                id="securityAnswer"
+                                value={form.securityAnswer}
+                                onChange={(e) => setForm({...form, securityAnswer: e.target.value})}
+                                className={errors.securityAnswer ? 'border-red-500' : ''}
+                                autoComplete="off"
+                            />
+                            {errors.securityAnswer && <p className="text-sm text-red-500">{errors.securityAnswer}</p>}
+                        </div>
+                    )}
 
                     <div className="space-y-2 pt-2">
                         <Button type="submit" className="w-full">
