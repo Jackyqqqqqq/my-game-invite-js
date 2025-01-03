@@ -154,7 +154,7 @@ const RegisterPage = ({ onRegister, onNavigate }) => {
                         {errors.confirmPassword && <p className="text-sm text-red-500">{errors.confirmPassword}</p>}
                     </div>
 
-                    <div className="flex items-center space-x-2">
+                    {/*<div className="flex items-center space-x-2">
                         <input
                             type="checkbox"
                             id="isAdmin"
@@ -163,7 +163,7 @@ const RegisterPage = ({ onRegister, onNavigate }) => {
                             className="h-4 w-4"
                         />
                         <Label htmlFor="isAdmin">注册为管理员账号</Label>
-                    </div>
+                    </div>*/}
 
                     <div className="space-y-2">
                         <Label>安全问题（可选）</Label>
